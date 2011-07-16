@@ -52,6 +52,6 @@ public class StaticElectricityPlayerListener extends PlayerListener{
                 player.getWorld().strikeLightningEffect(to);
             playerDistances.put(player, 0.0);
         }
-        StaticElectricity.log(player.toString() + "'s voltage: " + playerDistances.get(player).toString(), 1);
+        //StaticElectricity.log(player.toString() + "'s voltage: " + playerDistances.get(player).toString(), 1);
     }
 }
