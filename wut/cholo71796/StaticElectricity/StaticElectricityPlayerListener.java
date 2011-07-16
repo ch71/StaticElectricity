@@ -41,6 +41,9 @@ public class StaticElectricityPlayerListener extends PlayerListener{
         
         woolCheck = from.getBlock().getRelative(0, -1, 0).getTypeId();
         
+        if (hasPermission(player, "staticelectricity.exempt"))
+            return;        
+        
         if (woolCheck == Material.WOOL.getId())
             playerDistances.put(player, playerDistances.get(player) + (from.distance(to)*2));
         else if (woolCheck != Material.AIR.getId())
@@ -53,5 +56,12 @@ public class StaticElectricityPlayerListener extends PlayerListener{
             playerDistances.put(player, 0.0);
         }
         //StaticElectricity.log(player.toString() + "'s voltage: " + playerDistances.get(player).toString(), 1);
+    }
+    
+    private boolean hasPermission(Player player, String permnode) {
+        if (player.isOp())
+            return true;
+        else
+            return StaticElectricity.permissionHandler.has(player, permnode);
     }
 }

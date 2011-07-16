@@ -4,6 +4,8 @@
  */
 package wut.cholo71796.StaticElectricity;
 
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -26,16 +28,21 @@ public class StaticElectricity extends JavaPlugin{
     PluginDescriptionFile pdfFile;
     public Configuration config;
     
+    public static PermissionHandler permissionHandler;
+    
     static public double steps;
     static public boolean doDamage;
-
+    
     @Override
     public void onDisable() {
         //This plugin is so hip it doesn't do ANYTHING when it shuts off.
     }
     
     @Override
-    public void onEnable() {        
+    public void onEnable() {
+        
+        setupPermissions();
+        
         config = getConfiguration(); //Sets the public config to the /plugins/PluginFolder/config.yml
         
         File configfile = new File(getDataFolder(), "config.yml");
@@ -45,7 +52,7 @@ public class StaticElectricity extends JavaPlugin{
                 configfile.createNewFile();
             } catch (IOException ex) {
                 log("Error creating config " + ex.getMessage(), 3);
-            }            
+            }
             config.setProperty("doDamage", false);
             config.setProperty("steps", 5.0);
         }
@@ -79,5 +86,21 @@ public class StaticElectricity extends JavaPlugin{
                 logger.severe(message);
                 break;
         }
+    }
+    
+    private void setupPermissions() {
+        if (permissionHandler != null) {
+            return;
+        }
+        
+        Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
+        
+        if (permissionsPlugin == null) {
+            log("Permission system not detected!", 3);
+            return;
+        }
+        
+        permissionHandler = ((Permissions) permissionsPlugin).getHandler();
+        log("Permissions found: "+((Permissions)permissionsPlugin).getDescription().getFullName(), 1);
     }
 }
